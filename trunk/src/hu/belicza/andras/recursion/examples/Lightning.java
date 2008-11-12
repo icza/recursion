@@ -17,7 +17,7 @@ public class Lightning extends RandomBaseAlgorithm {
 	private float dispersion;
 	
 	public Lightning() {
-		super( "Lightning", "András Belicza", "1.0", null );
+		super( "Lightning", "András Belicza", "1.0", "A very simple recursion algorithm to model lightnings." );
 		
 		defaultProperties.setProperty( PROPERTY_GRANULARITY, "20"   );
 		defaultProperties.setProperty( PROPERTY_DISPERSION , "0.3f" );
