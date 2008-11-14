@@ -52,20 +52,20 @@ public class Labyrinth extends RandomBaseAlgorithm {
 		if ( dx >= 2*pathWidth && dy >= 2*pathWidth )
 			if ( dx > dy ) {
 				final int dividerX = x1 + random.nextInt( dx / pathWidth - 1 ) * pathWidth + pathWidth;
-				final int gateWayY = y1 + random.nextInt( dy / pathWidth     ) * pathWidth;
+				final int gatewayY = y1 + random.nextInt( dy / pathWidth     ) * pathWidth;
 				
-				graphics.drawLine( dividerX, y1                  , dividerX, gateWayY );
-				graphics.drawLine( dividerX, gateWayY + pathWidth, dividerX, y2       );
+				graphics.drawLine( dividerX, y1                  , dividerX, gatewayY );
+				graphics.drawLine( dividerX, gatewayY + pathWidth, dividerX, y2       );
 				
 				paint( x1      , y1, dividerX, y2 );
 				paint( dividerX, y1, x2      , y2 );
 			}
 			else {
 				final int dividerY = y1 + random.nextInt( dy / pathWidth - 1 ) * pathWidth + pathWidth;
-				final int gateWayX = x1 + random.nextInt( dx / pathWidth     ) * pathWidth;
+				final int gatewayX = x1 + random.nextInt( dx / pathWidth     ) * pathWidth;
 				
-				graphics.drawLine( x1                  , dividerY, gateWayX, dividerY );
-				graphics.drawLine( gateWayX + pathWidth, dividerY, x2      , dividerY );
+				graphics.drawLine( x1                  , dividerY, gatewayX, dividerY );
+				graphics.drawLine( gatewayX + pathWidth, dividerY, x2      , dividerY );
 				
 				paint( x1, y1      , x2, dividerY );
 				paint( x1, dividerY, x2, y2       );
