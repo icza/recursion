@@ -5,6 +5,7 @@ import hu.belicza.andras.recursion.model.RandomBaseAlgorithm;
 import java.awt.Graphics;
 
 /**
+ * A simple recursive algorithm to generate lightnings.
  * 
  * @author Belicza Andras
  */
@@ -17,7 +18,7 @@ public class Lightning extends RandomBaseAlgorithm {
 	private float dispersion;
 	
 	public Lightning() {
-		super( "Lightning", "András Belicza", "1.0", "A very simple recursion algorithm to model lightnings." );
+		super( "Lightning", "András Belicza", "1.0", "A simple recursive algorithm to generate lightnings." );
 		
 		defaultProperties.setProperty( PROPERTY_GRANULARITY, "20"   );
 		defaultProperties.setProperty( PROPERTY_DISPERSION , "0.3f" );
@@ -37,7 +38,7 @@ public class Lightning extends RandomBaseAlgorithm {
 	}
 	
 	@Override
-	public synchronized void paint( final Graphics graphics, final int width, final int height ) throws IllegalArgumentException {
+	public void paint( final Graphics graphics, final int width, final int height ) throws IllegalArgumentException {
 		super.paint( graphics, width, height );
 		
 		paint( 0, 0, width - 1, height - 1 );
