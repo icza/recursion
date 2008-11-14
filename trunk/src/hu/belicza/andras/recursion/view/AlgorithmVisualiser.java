@@ -8,7 +8,9 @@ import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -39,8 +41,9 @@ import org.w3c.dom.NodeList;
 public class AlgorithmVisualiser extends JFrame {
 	
 	public static final String APPLICATION_NAME    = "AlgorithmVisualiser";
-	public static final String APPLICATION_VERSION = "0.1 2008-11-12";
+	public static final String APPLICATION_VERSION = "0.5 2008-11-12";
 	public static final String APPLICATION_AUTHOR  = "András Belicza";
+	public static final String HOME_PAGE           = "http://code.google.com/p/recursion";
 	
 	public static final String ALGORITHMS_XML_FILE_NAME = "algorithms.xml";
 	public static final String ALGORITHM_ELEMENT_NAME   = "algorithm";
@@ -55,21 +58,48 @@ public class AlgorithmVisualiser extends JFrame {
 	 * Entry point of the program.<br>
 	 * Creates an instance, a frame.
 	 * 
-	 * @param arguments used to take arguments from the running environment - not used here
+	 * @param arguments used to take arguments from the running environment<br>
+	 *                  Possible values:
+	 *                  <ul>
+	 *                  	<li><code>-help</code> or <code>--help</code> or <code>-?</code> or <code>/?</code><br>
+	 *                  		prints the program usage, the available command line parameters and exits
+	 *                  	<li><code>-file algorithms_xml_file</code><br>
+	 *                  		defines the input algorihtms XML file
+	 *                  </ul>
 	 */
 	public static void main( final String[] arguments ) {
-		new AlgorithmVisualiser();
+		String algorithmXMLFileName = null;
+		
+		if ( arguments.length > 0 )
+			if ( arguments[ 0 ].equals( "-help" ) || arguments[ 0 ].equals( "--help" ) || arguments[ 0 ].equals( "-?" ) || arguments[ 0 ].equals( "/?" ) ) {
+				System.out.println( APPLICATION_NAME + " version " + APPLICATION_VERSION + " by " + APPLICATION_AUTHOR );
+				System.out.println( "Home page: " + HOME_PAGE );
+				System.out.println( "Program usage:" );
+				System.out.println( "\t-help or --help or -? or /?" );
+				System.out.println( "\t\tprints the program usage, the available command line parameters and exits" );
+				System.out.println( "\t-file algorithms_xml_file" );
+				System.out.println( "\t\tdefines the input algorithms XML file" );
+				return;
+			}
+		
+		if ( arguments.length > 1 ) {
+			if ( arguments[ 0 ].equals( "-file" ) )
+				algorithmXMLFileName = arguments[ 1 ];
+		}
+		
+		new AlgorithmVisualiser( loadAlgorithms( algorithmXMLFileName ) );
 	}
 	
 	/**
 	 * Creates a new <code>AlgorithmVisualiser</code>.
+	 * @param algorithms the array of algorithms
 	 */
-	public AlgorithmVisualiser() {
+	public AlgorithmVisualiser( final Algorithm[] algorithms ) {
 		super( APPLICATION_NAME + " version " + APPLICATION_VERSION + " by " + APPLICATION_AUTHOR );
 		
 		setDefaultCloseOperation( EXIT_ON_CLOSE );
 		
-		algorithmComboBox = new JComboBox( loadAlgorithms() );	
+		algorithmComboBox = new JComboBox( algorithms );	
 		
 		buildGUI();
 		setBounds( 70, 30, 900, 650 );
@@ -78,15 +108,18 @@ public class AlgorithmVisualiser extends JFrame {
 	
 	/**
 	 * Loads the available algorithm list from an XML file, and instantiates them.
+	 * @param algorihtmsXMLFileName name of the XML file listing the algorithms
 	 * @return an array of instances of the found algorithm classes
 	 */
 	@SuppressWarnings("unchecked")
-	private static Algorithm[] loadAlgorithms() {
+	private static Algorithm[] loadAlgorithms( final String algorihtmsXMLFileName ) {
 		List< Algorithm > algorithmList = null;
 		
 		try {
+			final InputStream xmlInputStream = algorihtmsXMLFileName == null ? AlgorithmVisualiser.class.getResourceAsStream( ALGORITHMS_XML_FILE_NAME )
+					                                                         : new FileInputStream( algorihtmsXMLFileName );
 			final Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-				.parse( AlgorithmVisualiser.class.getResourceAsStream( ALGORITHMS_XML_FILE_NAME ) );
+				.parse( xmlInputStream );
 			
 			final NodeList algorithmNodeList = document.getElementsByTagName( ALGORITHM_ELEMENT_NAME );
 			
@@ -130,7 +163,13 @@ public class AlgorithmVisualiser extends JFrame {
 					selectedAlgorithm.paint( graphics, getWidth(), getHeight() );
 				}
 				catch ( final IllegalArgumentException ie ) {
-					// TODO: handle this (warn user)
+					graphics.setColor( new Color( 255, 200, 200 ) );
+					graphics.drawString( "Illegal properties were specified:" , 5, 20 );
+					graphics.drawString( ie.getMessage(), 5, 40 );
+				}
+				catch ( final StackOverflowError soe ) {
+					graphics.setColor( new Color( 255, 200, 200 ) );
+					graphics.drawString( "STACK OVERFLOW, the recursion algorithm could not complete!" , 5, 20 );
 				}
 			}
 		};
