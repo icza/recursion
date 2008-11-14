@@ -163,6 +163,7 @@ public class AlgorithmVisualiser extends JFrame {
 					selectedAlgorithm.paint( graphics, getWidth(), getHeight() );
 				}
 				catch ( final IllegalArgumentException ie ) {
+					ie.printStackTrace();
 					graphics.setColor( new Color( 255, 200, 200 ) );
 					graphics.drawString( "Illegal properties were specified:" , 5, 20 );
 					graphics.drawString( ie.getMessage(), 5, 40 );
