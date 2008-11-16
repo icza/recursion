@@ -54,7 +54,6 @@ public interface Algorithm {
 	 * @param graphics graphics context to be used for painting
 	 * @param width    width of the desired image
 	 * @param height   height of the desired image
-	 * @return an error message if invalid property value found; null otherwise
 	 * @throws IllegalArgumentException thrown if illegal property value is specified
 	 */
 	public void paint( final Graphics graphics, final int width, final int height ) throws IllegalArgumentException;
