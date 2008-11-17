@@ -41,7 +41,7 @@ import org.w3c.dom.NodeList;
 public class AlgorithmVisualiser extends JFrame {
 	
 	public static final String APPLICATION_NAME    = "AlgorithmVisualiser";
-	public static final String APPLICATION_VERSION = "0.5 2008-11-12";
+	public static final String APPLICATION_VERSION = "0.9 2008-11-17";
 	public static final String APPLICATION_AUTHOR  = "András Belicza";
 	public static final String HOME_PAGE           = "http://code.google.com/p/recursion";
 	
@@ -165,12 +165,12 @@ public class AlgorithmVisualiser extends JFrame {
 				catch ( final IllegalArgumentException ie ) {
 					ie.printStackTrace();
 					graphics.setColor( new Color( 255, 200, 200 ) );
-					graphics.drawString( "Illegal properties were specified:" , 5, 20 );
+					graphics.drawString( "Illegal properties were specified:", 5, 20 );
 					graphics.drawString( ie.getMessage(), 5, 40 );
 				}
 				catch ( final StackOverflowError soe ) {
 					graphics.setColor( new Color( 255, 200, 200 ) );
-					graphics.drawString( "STACK OVERFLOW, the recursion algorithm could not complete!" , 5, 20 );
+					graphics.drawString( "STACK OVERFLOW, the recursion algorithm could not complete!", 5, 20 );
 				}
 			}
 		};
@@ -197,6 +197,7 @@ public class AlgorithmVisualiser extends JFrame {
 				final Algorithm selectedAlgorithm = (Algorithm) algorithmComboBox.getSelectedItem();
 				descriptionTextArea.setText( selectedAlgorithm.getDescription() );
 				updatePropertiesTextArea();
+				canvasComponent.repaint();
 			}
 		} );
 		algorithmComboBox.setSelectedIndex( 0 );
@@ -217,7 +218,8 @@ public class AlgorithmVisualiser extends JFrame {
 				}
 				final Properties algorithmProperties = selectedAlgorithm.getProperties();
 				for ( final String propertyName : modifiedProperties.stringPropertyNames() )
-					algorithmProperties.setProperty( propertyName, modifiedProperties.getProperty( propertyName ) );
+					if ( !propertyName.startsWith( "--" ) ) // ignore comments
+						algorithmProperties.setProperty( propertyName, modifiedProperties.getProperty( propertyName ) );
 				
 				// And then initiate a repaint
 				canvasComponent.repaint();
