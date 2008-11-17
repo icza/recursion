@@ -122,7 +122,7 @@ public class Terrain extends RandomBaseAlgorithm {
 	 * Interpolates. Calculates a 3rd value at a specified position between 2 boundary value.<br>
 	 * The position is specified by a ratio, whose value means:
 	 * 0 => value1, 1 => value2, 0 < ratio < 1  => somewhere between value1 and value2.
-	 * We would like the result to be continous and nice, so 'somewhere' is determined by a
+	 * We would like the result to be continuous and nice, so 'somewhere' is determined by a
 	 * function which is non-linear (linear resulted in "breaklines"). It goes from value1
 	 * to value2 by the function which starts with 0 derivation and ends with 0 derivation
 	 * (it has an infletion point, it has an 'S'). We use for this an 'x^4' function:<br>
