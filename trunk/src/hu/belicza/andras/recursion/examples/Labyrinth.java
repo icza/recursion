@@ -35,8 +35,11 @@ public class Labyrinth extends RandomBaseAlgorithm {
 	}
 	
 	@Override
-	public void paint( final Graphics graphics, final int width, final int height ) throws IllegalArgumentException {
+	public void paint( final Graphics graphics, int width, int height ) throws IllegalArgumentException {
 		super.paint( graphics, width, height );
+		
+		width  = width  - width  % ( pathWidth ) + 1;
+		height = height - height % ( pathWidth ) + 1;
 		
 		paint( 0, 0, width - 1, height - 1 );
 		
