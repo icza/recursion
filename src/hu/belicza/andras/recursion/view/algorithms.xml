@@ -3,4 +3,5 @@
 <algorithms>
 	<algorithm class="hu.belicza.andras.recursion.examples.Lightning" />
 	<algorithm class="hu.belicza.andras.recursion.examples.Labyrinth" />
+	<algorithm class="hu.belicza.andras.recursion.examples.Terrain" />
 </algorithms>
