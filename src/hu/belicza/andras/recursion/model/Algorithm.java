@@ -4,9 +4,9 @@ import java.awt.Graphics;
 import java.util.Properties;
 
 /**
- * Represents a configurable self-visualisable algorithm.<br>
+ * Represents a configurable self-visualizable algorithm.<br>
  * Configuration is possible via the <code>Properties</code> object returned by the {@link #getProperties()}.
- * 
+ * s
  * @author Belicza Andras
  */
 public interface Algorithm {

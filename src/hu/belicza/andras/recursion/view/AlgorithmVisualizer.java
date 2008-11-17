@@ -33,12 +33,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 /**
- * Visualiser application for algorithms implementing the {@link Algorithm} interface.
+ * Visualizer application for algorithms implementing the {@link Algorithm} interface.
  * 
  * @author Belicza Andras
  */
 @SuppressWarnings("serial")
-public class AlgorithmVisualiser extends JFrame {
+public class AlgorithmVisualizer extends JFrame {
 	
 	public static final String APPLICATION_NAME    = "AlgorithmVisualiser";
 	public static final String APPLICATION_VERSION = "0.9 2008-11-17";
@@ -64,7 +64,7 @@ public class AlgorithmVisualiser extends JFrame {
 	 *                  	<li><code>-help</code> or <code>--help</code> or <code>-?</code> or <code>/?</code><br>
 	 *                  		prints the program usage, the available command line parameters and exits
 	 *                  	<li><code>-file algorithms_xml_file</code><br>
-	 *                  		defines the input algorihtms XML file
+	 *                  		defines the input algorithms XML file
 	 *                  </ul>
 	 */
 	public static void main( final String[] arguments ) {
@@ -87,14 +87,14 @@ public class AlgorithmVisualiser extends JFrame {
 				algorithmXMLFileName = arguments[ 1 ];
 		}
 		
-		new AlgorithmVisualiser( loadAlgorithms( algorithmXMLFileName ) );
+		new AlgorithmVisualizer( loadAlgorithms( algorithmXMLFileName ) );
 	}
 	
 	/**
 	 * Creates a new <code>AlgorithmVisualiser</code>.
 	 * @param algorithms the array of algorithms
 	 */
-	public AlgorithmVisualiser( final Algorithm[] algorithms ) {
+	public AlgorithmVisualizer( final Algorithm[] algorithms ) {
 		super( APPLICATION_NAME + " version " + APPLICATION_VERSION + " by " + APPLICATION_AUTHOR );
 		
 		setDefaultCloseOperation( EXIT_ON_CLOSE );
@@ -116,7 +116,7 @@ public class AlgorithmVisualiser extends JFrame {
 		List< Algorithm > algorithmList = null;
 		
 		try {
-			final InputStream xmlInputStream = algorihtmsXMLFileName == null ? AlgorithmVisualiser.class.getResourceAsStream( ALGORITHMS_XML_FILE_NAME )
+			final InputStream xmlInputStream = algorihtmsXMLFileName == null ? AlgorithmVisualizer.class.getResourceAsStream( ALGORITHMS_XML_FILE_NAME )
 					                                                         : new FileInputStream( algorihtmsXMLFileName );
 			final Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
 				.parse( xmlInputStream );
@@ -145,7 +145,7 @@ public class AlgorithmVisualiser extends JFrame {
 	}
 	
 	/**
-	 * Builds the graphical user interface of the algorithm visualiser.
+	 * Builds the graphical user interface of the algorithm visualizer.
 	 */
 	private void buildGUI() {
 		final Container contentPane = getContentPane();
