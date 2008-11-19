@@ -35,17 +35,22 @@ public class Labyrinth extends RandomBaseAlgorithm {
 	}
 	
 	@Override
-	public void paint( final Graphics graphics, int width, int height ) throws IllegalArgumentException {
+	public void paint( final Graphics graphics, final int width, final int height ) throws IllegalArgumentException {
 		super.paint( graphics, width, height );
 		
-		width  = width  - width  % ( pathWidth ) + 1;
-		height = height - height % ( pathWidth ) + 1;
+		// Aligning size to max number of paths.
+		final int width_  = width  - width  % pathWidth + 1;
+		final int height_ = height - height % pathWidth + 1;
 		
-		paint( 0, 0, width - 1, height - 1 );
+		// Centered paint
+		final int x1 = ( width  - width_  ) / 2;
+		final int y1 = ( height - height_ ) / 2;
+		
+		paint( x1, y1, x1 + width_ - 1, y1 + height_ - 1 );
 		
 		// A frame for the labyrinth
 		graphics.setColor( Color.GREEN );
-		graphics.drawRect( 0, 0, width - 1, height - 1 );
+		graphics.drawRect( x1, y1, width_ - 1, height_ - 1 ); //0, 0, width - 1, height - 1 );
 	}
 	
 	public void paint( final int x1, final int y1, final int x2, final int y2 ) {
