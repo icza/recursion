@@ -18,7 +18,10 @@ public class Lightning extends RandomBaseAlgorithm {
 	private float dispersion;
 	
 	public Lightning() {
-		super( "Lightning", "András Belicza", "1.0", "A simple recursive algorithm to generate lightnings." );
+		super( "Lightning", "András Belicza", "1.0",
+			   "A simple recursive algorithm to generate lightnings.\n"
+			 + "You can see this algorithm in action in the Qpac project:\n"
+			 + "http://code.google.com/p/qpac" );
 		
 		defaultProperties.setProperty( PROPERTY_GRANULARITY, "20"   );
 		defaultProperties.setProperty( PROPERTY_DISPERSION , "0.3f" );

@@ -29,8 +29,8 @@ public class Terrain extends RandomBaseAlgorithm {
 	
 	public Terrain() {
 		super( "Terrain and relief map", "András Belicza", "1.0",
-			   "A recursive algorithm to generate terrain and draw its relief map.\n"
-			 + "You can see the non-recursive version of this algorithm in action in the LandFight project:\n"
+			   "An algorithm to generate terrain and draw its relief map.\n"
+			 + "You can see this algorithm in action in the LandFight project:\n"
 			 + "http://code.google.com/p/landfight" );
 		
 		properties.setProperty( PROPERTY_MIN_HEIGHT , "-800.0" );
@@ -55,67 +55,56 @@ public class Terrain extends RandomBaseAlgorithm {
 	}
 	
 	@Override
-	public void paint( final Graphics graphics, int width, int height ) throws IllegalArgumentException {
+	public void paint( final Graphics graphics, final int width, final int height ) throws IllegalArgumentException {
 		super.paint( graphics, width, height );
 		
-		width  = width  - width  % sectorSize + 1;
-		height = height - height % sectorSize + 1;
+		// Aligning size to max number of sectors.
+		final int width_  = width  - width  % sectorSize;
+		final int height_ = height - height % sectorSize;
 		
-		paint( 0, 0, width - 1, height - 1, randomHeight(), randomHeight(), randomHeight(), randomHeight() );
+		// Centered paint
+		final int x1 = ( width  - width_  ) / 2;
+		final int y1 = ( height - height_ ) / 2;
+		
+		paint( x1, y1, x1 + width_ - 1, y1 + height_ - 1 );
 	}
 	
-	public void paint( final int x1, final int y1, final int x2, final int y2, final float height1, final float height2, final float height3, final float height4 ) {
+	public void paint( final int x1, final int y1, final int x2, final int y2 ) {
 		final int dx = x2 - x1;
 		final int dy = y2 - y1;
 		
-		if ( dx > sectorSize || dy > sectorSize ) {
-			if ( dx > sectorSize && dy > sectorSize ) {
-				final float[] baseHeights = randomHeights( 5 );
-				paint( x1, y1, x1 + sectorSize, y1 + sectorSize, height1, baseHeights[ 0 ], baseHeights[ 4 ], baseHeights[ 3 ] );
-				paint( x1 + sectorSize, y1, x2, y1 + sectorSize, baseHeights[ 0 ], height2, baseHeights[ 1 ], baseHeights[ 4 ] );
-				paint( x1, y1 + sectorSize, x1 + sectorSize, y2, baseHeights[ 3 ], baseHeights[ 4 ], baseHeights[ 2 ], height4 );
-				paint( x1 + sectorSize, y1 + sectorSize, x2, y2, baseHeights[ 4 ], baseHeights[ 1 ], height3, baseHeights[ 2 ] );
-			}
-			else if ( dx > sectorSize ) {
-				final float[] baseHeights = randomHeights( 2 );
-				paint( x1, y1, x1 + sectorSize, y2, height1, baseHeights[ 0 ], baseHeights[ 1 ], height4 );
-				paint( x1 + sectorSize, y1, x2, y2, baseHeights[ 0 ], height2, height3, baseHeights[ 1 ] );
-			}
-			else { // dy > sectorSize
-				final float[] baseHeights = randomHeights( 2 );
-				paint( x1, y1, x2, y1 + sectorSize, height1, height2, baseHeights[ 0 ], baseHeights[ 1 ] );
-				paint( x1, y1 + sectorSize, x2, y2, baseHeights[ 1 ], baseHeights[ 0 ], height3, height4 );
-			}
-		}
-		else {
-			// Generate and draw the sector 
-			for ( int y = y1; y < y2; y++ ) {
-				final float baseLineStartHeight = interpolate( height1, height4, (float) ( y - y1 ) / dy );
-				final float baseLineEndHeight   = interpolate( height2, height3, (float) ( y - y1 ) / dy );
-				for ( int x = x1; x < x2; x++ ) {
-					// Finally generate the height of a point
-					float height = interpolate( baseLineStartHeight, baseLineEndHeight, (float) ( x - x1 ) / dx );
-					height += ( 0.5f - random.nextFloat() ) * dispersion; // Add random dispersion to it
-					// Leave it between limits
-					height = height < minHeight ? minHeight : ( height > maxHeight ? maxHeight : height );
-					graphics.setColor( new Color( getRGBOfHeight( height ) ) );
-					graphics.drawLine( x, y, x, y );
-				}
-			}
-		}
+		// First we generate common base corner heights on the sectors 
+		// +1 indices for the next sectors first lines which are not visible, just helper base heights
+		final float[][] baseHeights = new float[ dy / sectorSize + 2 ][ dx / sectorSize + 2 ];
+		for ( int i = 0; i < baseHeights.length; i++ )
+			for ( int j = 0; j < baseHeights[ i ].length; j++ )
+				baseHeights[ i ][ j ] = minHeight + random.nextFloat() * ( maxHeight - minHeight );
+		
+		// Now we generate and paint the sectors 
+		for ( int sectorY = dy / sectorSize; sectorY >= 0; sectorY-- )
+			for ( int sectorX = dx / sectorSize; sectorX >= 0; sectorX-- )
+				paintSector( x1 + sectorX * sectorSize, y1 + sectorY * sectorSize, 
+							baseHeights[ sectorY ][ sectorX ], baseHeights[ sectorY ][ sectorX + 1 ],
+							baseHeights[ sectorY + 1 ][ sectorX + 1 ], baseHeights[ sectorY + 1 ][ sectorX ] ); 
 	}
 	
-	private float[] randomHeights( int count ) {
-		final float[] randomHeights = new float[ count ];
+	private void paintSector( final int x1, final int y1, final float height1, final float height2, final float height3, final float height4 ) {
+		final int x2 = x1 + sectorSize;
+		final int y2 = y1 + sectorSize;
 		
-		while ( count-- > 0 )
-			randomHeights[ count ] = randomHeight();
-		
-		return randomHeights;
-	}
-	
-	private float randomHeight() {
-		return minHeight + random.nextFloat() * ( maxHeight - minHeight );
+		for ( int y = y1; y < y2; y++ ) {
+			final float baseLineStartHeight = interpolate( height1, height4, (float) ( y - y1 ) / sectorSize );
+			final float baseLineEndHeight   = interpolate( height2, height3, (float) ( y - y1 ) / sectorSize );
+			for ( int x = x1; x < x2; x++ ) {
+				// Finally generate the height of a point
+				float height = interpolate( baseLineStartHeight, baseLineEndHeight, (float) ( x - x1 ) / sectorSize );
+				height += ( 0.5f - random.nextFloat() ) * dispersion; // Add random dispersion to it
+				// Leave it between limits
+				height = height < minHeight ? minHeight : ( height > maxHeight ? maxHeight : height );
+				graphics.setColor( new Color( getRGBOfHeight( height ) ) );
+				graphics.drawLine( x, y, x, y );
+			}
+		}
 	}
 	
 	/**
