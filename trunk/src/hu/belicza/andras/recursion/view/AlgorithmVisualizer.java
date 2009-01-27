@@ -40,7 +40,7 @@ import org.w3c.dom.NodeList;
 @SuppressWarnings("serial")
 public class AlgorithmVisualizer extends JFrame {
 	
-	public static final String APPLICATION_NAME    = "AlgorithmVisualiser";
+	public static final String APPLICATION_NAME    = "AlgorithmVisualizer";
 	public static final String APPLICATION_VERSION = "0.9 2008-11-17";
 	public static final String APPLICATION_AUTHOR  = "András Belicza";
 	public static final String HOME_PAGE           = "http://code.google.com/p/recursion";
@@ -91,7 +91,7 @@ public class AlgorithmVisualizer extends JFrame {
 	}
 	
 	/**
-	 * Creates a new <code>AlgorithmVisualiser</code>.
+	 * Creates a new <code>AlgorithmVisualizer</code>.
 	 * @param algorithms the array of algorithms
 	 */
 	public AlgorithmVisualizer( final Algorithm[] algorithms ) {
