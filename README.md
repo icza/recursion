@@ -7,7 +7,7 @@ This project contains recursive algorithms which demonstrate the simplicity and 
 ## Screenshot of the Visualizer ##
 ![http://lh6.ggpht.com/_jDMClHrENz8/SX8d4fAdELI/AAAAAAAAK9I/jWkssNBIA48/s800/algvisualizer2.PNG.jpg](http://lh6.ggpht.com/_jDMClHrENz8/SX8d4fAdELI/AAAAAAAAK9I/jWkssNBIA48/s800/algvisualizer2.PNG.jpg)
 
-[More screenshots...](Screenshots.md)
+[More screenshots...](../wiki/Screenshots.md)
 
 ## What is recursion? ##
 Who wouldn't have seen the simple recursive factorial algorithm?
